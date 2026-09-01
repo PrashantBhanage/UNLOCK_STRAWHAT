@@ -243,6 +243,5 @@ Every endpoint except signup and login needs the `Authorization: Bearer <token>`
 
 ## Team
 
-Built for [Hackathon Name] — the EduBridge team.
+. StrawHat — the EduBridge team.
 
-Build. Innovate. Collaborate. Have fun.
