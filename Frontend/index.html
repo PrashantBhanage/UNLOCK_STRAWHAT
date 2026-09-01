@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="auth-page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-card__header">
+        <h1>Edu<span style="color:#f5b89a">Bridge</span></h1>
+        <p>Learn anywhere — even with limited internet</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-form="login-form-el">Log In</button>
+        <button class="auth-tab" data-form="signup-form-el">Sign Up</button>
+      </div>
+
+      <div id="auth-alert" class="alert"></div>
+
+      <form id="login-form-el" class="auth-form active">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="you@school.edu" autocomplete="email">
+          <span class="field-error" data-error="email"></span>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="Your password" autocomplete="current-password">
+          <span class="field-error" data-error="password"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Log In</button>
+      </form>
+
+      <form id="signup-form-el" class="auth-form">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" name="name" placeholder="Jane Doe">
+          <span class="field-error" data-error="name"></span>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" placeholder="you@school.edu">
+          <span class="field-error" data-error="email"></span>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" placeholder="Create a password">
+          <span class="field-error" data-error="password"></span>
+        </div>
+        <div class="form-group">
+          <label>I am a…</label>
+          <div class="role-picker">
+            <div class="role-option">
+              <input type="radio" name="role" id="role-student" value="STUDENT" checked>
+              <label for="role-student">📚 Student</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role-tutor" value="TUTOR">
+              <label for="role-tutor">🎓 Tutor</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Account</button>
+      </form>
+    </div>
+  </div>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__brand">Edu<span>Bridge</span></div>
+    <div class="topbar__actions">
+      <div id="status-pill" class="status-pill">
+        <span class="status-pill__dot"></span>
+        <span class="status-pill__label">Online</span>
+      </div>
+      <button id="logout-btn" class="btn btn-ghost">Log out</button>
+    </div>
+  </header>
+  <div id="offline-banner" class="offline-banner">You're offline — some features use cached data</div>
+
+  <main class="page">
+    <div class="page-header">
+      <h1 id="user-greeting">Hi there</h1>
+      <p>Pick a subject, then choose how you'd like to learn today.</p>
+    </div>
+
+    <div id="subject-grid" class="subject-grid"></div>
+
+    <div id="path-picker" class="path-picker">
+      <h2>How do you want to learn <span id="path-subject-label">—</span>?</h2>
+      <p>Get matched with a real tutor, or study with the AI assistant offline.</p>
+      <div class="path-buttons">
+        <button id="btn-tutor" class="btn btn-secondary">👩‍🏫 Learn from Tutor</button>
+        <button id="btn-ai" class="btn btn-primary" style="width:auto">🤖 AI Assistant</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/offline.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

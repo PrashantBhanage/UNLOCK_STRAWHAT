@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge — AI Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__brand">Edu<span>Bridge</span> · <span id="page-subject" style="font-weight:400;opacity:0.85">Math</span></div>
+    <div class="topbar__actions">
+      <div id="status-pill" class="status-pill">
+        <span class="status-pill__dot"></span>
+        <span class="status-pill__label">Online</span>
+      </div>
+      <a id="back-btn" href="dashboard.html" class="btn btn-ghost">← Dashboard</a>
+      <button id="logout-btn" class="btn btn-ghost">Log out</button>
+    </div>
+  </header>
+  <div id="offline-banner" class="offline-banner">Offline mode — using cached slides &amp; FAQ</div>
+
+  <main class="page" style="padding-top:1.25rem">
+    <div class="ai-layout">
+      <aside class="ai-sidebar">
+        <h3>Slides</h3>
+        <ul id="slide-list" class="slide-list"></ul>
+      </aside>
+
+      <div class="ai-main">
+        <div class="slide-content">
+          <span id="slide-num" class="slide-num-badge">—</span>
+          <h2 id="slide-title">Loading…</h2>
+          <p id="slide-body">Fetching slides…</p>
+        </div>
+
+        <div class="chat-panel">
+          <div id="chat-messages" class="chat-messages">
+            <div class="chat-bubble chat-bubble--ai">
+              <div class="chat-bubble__label">AI Assistant</div>
+              Ask me anything about this subject. I'll search saved answers — works offline too!
+            </div>
+          </div>
+          <form id="chat-form" class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Type your question…" autocomplete="off">
+            <button type="submit" class="btn btn-primary" style="width:auto">Ask</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/offline.js"></script>
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>

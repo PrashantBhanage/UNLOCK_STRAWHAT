@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge — Request Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__brand">Edu<span>Bridge</span> · <span id="page-subject" style="font-weight:400;opacity:0.85">Math</span></div>
+    <div class="topbar__actions">
+      <div id="status-pill" class="status-pill">
+        <span class="status-pill__dot"></span>
+        <span class="status-pill__label">Online</span>
+      </div>
+      <a id="back-btn" href="dashboard.html" class="btn btn-ghost">← Dashboard</a>
+      <button id="logout-btn" class="btn btn-ghost">Log out</button>
+    </div>
+  </header>
+  <div id="offline-banner" class="offline-banner">Offline — your request will be sent when you're back online</div>
+
+  <main class="page">
+    <div class="page-header">
+      <h1>Request a Tutor</h1>
+      <p>Describe what you need help with in <strong id="subject-display">Math</strong>.</p>
+    </div>
+
+    <div id="request-alert" class="alert"></div>
+
+    <div id="form-section" class="request-card">
+      <form id="request-form">
+        <div class="form-group">
+          <label for="description">What do you need help with?</label>
+          <textarea id="description" name="description" placeholder="e.g. I'm stuck on quadratic equations from chapter 5…"></textarea>
+          <span class="field-error" data-error="description"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Request Help</button>
+      </form>
+    </div>
+
+    <div id="status-card" class="status-card">
+      <h3>Your Request Status</h3>
+      <div class="status-row">
+        <span>Status</span>
+        <span id="status-value">—</span>
+      </div>
+      <div class="status-row">
+        <span>Subject</span>
+        <span id="status-subject">—</span>
+      </div>
+      <div class="status-row">
+        <span>Your question</span>
+        <span id="status-desc">—</span>
+      </div>
+      <div class="status-row">
+        <span>Tutor</span>
+        <span id="status-tutor">—</span>
+      </div>
+      <div class="status-row">
+        <span>Scheduled</span>
+        <span id="status-time">—</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/offline.js"></script>
+  <script src="js/tutor-request.js"></script>
+</body>
+</html>
