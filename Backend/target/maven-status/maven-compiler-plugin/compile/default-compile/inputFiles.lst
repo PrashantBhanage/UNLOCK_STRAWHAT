@@ -29,6 +29,7 @@
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/dto/SessionResponse.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/dto/SignupRequest.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/dto/SlideResponse.java
+/home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/dto/SubjectResourceResponse.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/ChatMessage.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/FaqKnowledgeBase.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/Request.java
@@ -37,6 +38,7 @@
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/Session.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/SessionStatus.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/SlideContent.java
+/home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/SubjectResource.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/TutorProfile.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/entity/User.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/exception/GlobalExceptionHandler.java
@@ -44,6 +46,7 @@
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/RequestRepository.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/SessionRepository.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/SlideContentRepository.java
+/home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/SubjectResourceRepository.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/TutorProfileRepository.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/repository/UserRepository.java
 /home/prrssshhhh/Desktop/EduBridge/Backend/src/main/java/com/edubridge/service/AiAssistantService.java

@@ -1,8 +1,8 @@
 const SUBJECTS = [
-  { id: 'Math', icon: '🔢', tagline: 'Numbers, algebra & calculus' },
-  { id: 'Science', icon: '🔬', tagline: 'Physics, chemistry & more' },
   { id: 'English', icon: '📖', tagline: 'Writing, grammar & literature' },
-  { id: 'Arts', icon: '🎨', tagline: 'Creative expression & design' },
+  { id: 'Math', icon: '🔢', tagline: 'Numbers, algebra & calculus' },
+  { id: 'Python', icon: '🐍', tagline: 'Programming fundamentals' },
+  { id: 'Java', icon: '☕', tagline: 'Object-oriented programming' },
 ];
 
 let selectedSubject = null;

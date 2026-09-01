@@ -15,6 +15,7 @@ com/edubridge/service/CurrentUserService.class
 com/edubridge/entity/Session.class
 com/edubridge/service/AuthService.class
 com/edubridge/entity/SlideContent.class
+com/edubridge/entity/SubjectResource.class
 com/edubridge/entity/Request.class
 com/edubridge/EduBridgeApplication.class
 com/edubridge/service/RequestService.class
@@ -23,6 +24,7 @@ com/edubridge/entity/User.class
 com/edubridge/repository/RequestRepository.class
 com/edubridge/config/SecurityConfig.class
 com/edubridge/dto/SessionResponse.class
+com/edubridge/dto/SubjectResourceResponse.class
 com/edubridge/entity/User$UserBuilder.class
 com/edubridge/service/CustomUserDetailsService.class
 com/edubridge/repository/SlideContentRepository.class
@@ -47,11 +49,14 @@ com/edubridge/repository/SessionRepository.class
 com/edubridge/entity/RequestStatus.class
 com/edubridge/config/CorsConfig.class
 com/edubridge/service/SessionService.class
+com/edubridge/dto/SubjectResourceResponse$SubjectResourceResponseBuilder.class
 com/edubridge/dto/SessionResponse$SessionResponseBuilder.class
 com/edubridge/config/DataSqlInitializer.class
 com/edubridge/config/JwtUtil.class
 com/edubridge/entity/SessionStatus.class
+com/edubridge/entity/SubjectResource$SubjectResourceBuilder.class
 com/edubridge/dto/SlideResponse.class
+com/edubridge/repository/SubjectResourceRepository.class
 com/edubridge/dto/RequestResponse.class
 com/edubridge/controller/AiAssistantController.class
 com/edubridge/controller/TutorController.class

@@ -3,8 +3,6 @@ let activeSlideIndex = 0;
 let subject = '';
 let apiSubject = '';
 
-const SUBJECT_ALIASES = { Science: 'Physics', Arts: 'English' };
-
 function cacheKey(type) {
   return `edubridge_cache_${type}_${apiSubject.toLowerCase()}`;
 }
@@ -170,7 +168,7 @@ async function handleAsk(question) {
 document.addEventListener('DOMContentLoaded', () => {
   requireAuth(['STUDENT']);
   subject = getSubjectFromUrl();
-  apiSubject = SUBJECT_ALIASES[subject] || subject;
+  apiSubject = subject;
   document.getElementById('page-subject').textContent = subject;
   document.getElementById('back-btn').href = 'dashboard.html';
   document.getElementById('logout-btn')?.addEventListener('click', logout);

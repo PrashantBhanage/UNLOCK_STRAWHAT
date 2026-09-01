@@ -47,6 +47,21 @@ function formatDateTime(iso) {
   }
 }
 
+async function loadSubjectResource() {
+  const section = document.getElementById('resource-section');
+  const link = document.getElementById('resource-link');
+  if (!section || !link) return;
+
+  try {
+    const data = await apiFetch(`/api/tutors/resource/${encodeURIComponent(subject)}`);
+    link.href = data.resourceUrl;
+    link.textContent = data.resourceLabel || 'Watch Tutor Resource';
+    section.hidden = false;
+  } catch {
+    section.hidden = true;
+  }
+}
+
 function showOfflineSaved() {
   const card = document.getElementById('status-card');
   card.classList.add('visible');
@@ -146,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('back-btn').href = 'dashboard.html';
   document.getElementById('logout-btn')?.addEventListener('click', logout);
 
+  loadSubjectResource();
   tryRestoreState();
 
   document.getElementById('request-form')?.addEventListener('submit', async (e) => {

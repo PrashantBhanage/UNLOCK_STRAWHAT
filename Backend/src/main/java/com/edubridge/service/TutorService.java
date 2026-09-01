@@ -1,11 +1,15 @@
 package com.edubridge.service;
 
 import com.edubridge.dto.LightweightTutorDto;
+import com.edubridge.dto.SubjectResourceResponse;
 import com.edubridge.entity.TutorProfile;
+import com.edubridge.repository.SubjectResourceRepository;
 import com.edubridge.repository.TutorProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.List;
 public class TutorService {
 
     private final TutorProfileRepository tutorProfileRepository;
+    private final SubjectResourceRepository subjectResourceRepository;
 
     @Transactional(readOnly = true)
     public List<LightweightTutorDto> getLightweightTutors() {
@@ -25,6 +30,14 @@ public class TutorService {
                                 profile.getUser().getName(),
                                 subject)))
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public SubjectResourceResponse getResourceForSubject(String subject) {
+        return subjectResourceRepository.findBySubjectIgnoreCase(subject)
+                .map(SubjectResourceResponse::from)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No resource found for subject: " + subject));
     }
 
     private List<String> parseSubjects(TutorProfile profile) {
