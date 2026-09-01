@@ -1,96 +1,104 @@
 # EduBridge
 
-Not every student has access to good learning resources or someone who can help them understand difficult subjects. **EduBridge** is a platform that connects students who need academic help with tutors/volunteers who can teach them — built to work even in low or no internet conditions.
+## What this is about
 
-**Core Flow:** Student Request → Find Tutor → Match → Schedule → Learn
+Not every student gets access to good learning resources, or has someone around who can actually sit with them and explain a difficult topic. That's especially true for students in remote areas or places with weak internet — they're often left out of the "extra help" that other students get easily.
 
----
+EduBridge tries to fix that. It's a platform that connects students who need academic help with tutors or volunteers who are willing to teach them. The twist we focused on: it's built to keep working even when the internet is slow, unreliable, or completely gone — because that's the reality for a lot of the students this is meant to help.
 
-## Tech Stack
+The whole system follows one simple flow:
 
-| Layer     | Technology                          |
-|-----------|--------------------------------------|
-| Backend   | Java, Spring Boot, Spring Security, JWT |
-| Database  | MySQL                                |
-| Frontend  | HTML, CSS, JavaScript (vanilla, no framework) |
-| Build Tool| Maven                                |
+**Student Request → Find Tutor → Match → Schedule → Learn**
 
 ---
 
-## Project Structure
+## What's actually in this project
+
+We built this with a fairly standard but solid stack, nothing fancy, just things that work reliably:
+
+- **Backend** — Java with Spring Boot, using Spring Security and JWT for login/auth
+- **Database** — MySQL
+- **Frontend** — plain HTML, CSS and JavaScript (no React or frameworks, kept it simple on purpose since we were short on time)
+- **Build tool** — Maven for the backend
+
+The project folder is split into three parts:
 
 ```
 EduBridge/
-├── Backend/        → Spring Boot REST API
-├── Frontend/        → HTML/CSS/JS client
-└── DB/               → MySQL schema/scripts
+├── Backend/     → the Spring Boot API, all the logic and database handling
+├── Frontend/    → the website itself, what the user actually sees
+└── DB/          → MySQL schema and any scripts related to the database
 ```
 
 ---
 
-## Prerequisites
+## Before you start
 
-Before running the project, make sure you have installed:
+Make sure these are installed on your machine, otherwise nothing will run:
 
-- **Java 17+** (JDK)
-- **Maven** (usually bundled with most Java IDEs, or install separately)
-- **MySQL** (running locally, e.g. via MySQL Workbench or XAMPP)
-- A code editor (VS Code recommended for frontend)
-- **Postman** (optional, for testing backend APIs directly)
-
----
-
-## Step 1: Set Up the Database
-
-1. Open MySQL and create a new database:
-   ```sql
-   CREATE DATABASE edubridge_db;
-   ```
-2. No need to manually create tables — Spring Boot (JPA/Hibernate) will auto-generate them on first run based on the entity classes.
+- Java 17 or newer (JDK)
+- Maven (comes bundled with most IDEs, but you can install it separately too)
+- MySQL or MariaDB running locally
+- A code editor — VS Code works well, especially for the frontend
+- Postman, if you want to test the backend directly without touching the frontend
 
 ---
 
-## Step 2: Run the Backend
+## Setting up the database
 
-1. Open a terminal and navigate to the Backend folder:
-   ```bash
-   cd EduBridge/Backend
-   ```
+Open your MySQL/MariaDB and just create the database — you don't need to create any tables yourself, Spring Boot handles that automatically the first time it runs, based on our entity classes.
 
-2. Open `src/main/resources/application.properties` and update it with your MySQL credentials:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/edubridge_db
-   spring.datasource.username=root
-   spring.datasource.password=YOUR_MYSQL_PASSWORD
+```sql
+CREATE DATABASE edubridge_db;
+```
 
-   spring.jpa.hibernate.ddl-auto=update
-   spring.jpa.show-sql=true
+That's really it for this step.
 
-   server.port=8080
-   ```
+---
 
-3. Build and run the backend:
-   ```bash
-   mvn spring-boot:run
-   ```
+## Running the backend
 
-4. If it starts successfully, you'll see something like:
-   ```
-   Tomcat started on port(s): 8080
-   Started EduBridgeApplication in X.XXX seconds
-   ```
+Head into the Backend folder:
 
-5. Backend is now live at:
-   ```
-   http://localhost:8080
-   ```
+```bash
+cd EduBridge/Backend
+```
 
-### Quick Backend Test (Postman)
+Open `src/main/resources/application.properties` and put in your actual MySQL credentials — the placeholder values won't work, this trips people up a lot:
 
-**Signup:**
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/edubridge_db
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+server.port=8080
+```
+
+Then just run it:
+
+```bash
+mvn spring-boot:run
+```
+
+If everything's fine, you'll see something like this near the bottom of the logs:
+
+```
+Tomcat started on port(s): 8080
+Started EduBridgeApplication in X.XXX seconds
+```
+
+That means your backend is live at `http://localhost:8080`, and Hibernate will have already created all the tables for you behind the scenes.
+
+### Quick way to check it's working (Postman)
+
+Try signing someone up:
+
 ```
 POST http://localhost:8080/api/auth/signup
-Body (JSON):
+
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
@@ -98,126 +106,127 @@ Body (JSON):
   "role": "STUDENT"
 }
 ```
-Response should return a JWT `token`.
 
-**Login:**
+You should get back a JWT token in the response. Then try logging in with the same credentials:
+
 ```
 POST http://localhost:8080/api/auth/login
-Body (JSON):
+
 {
   "email": "jane@example.com",
   "password": "password123"
 }
 ```
 
-Use the returned token as a header on all other requests:
+Same thing — you get a token back. From here on, every other request (creating a request, viewing tutors, asking the AI, etc.) needs that token attached as a header:
+
 ```
 Authorization: Bearer <token>
 ```
 
 ---
 
-## Step 3: Run the Frontend
+## Running the frontend
 
-The frontend is plain HTML/CSS/JS — no build step needed.
+There's no build step here since it's plain HTML/CSS/JS — you can literally just open the file.
 
-**Option A — Simplest (double-click):**
-1. Navigate to `EduBridge/Frontend/`
-2. Open `index.html` directly in your browser
+**The quick way:** go into the `Frontend/` folder and double-click `index.html` to open it in your browser.
 
-**Option B — Recommended (avoids CORS/localStorage issues):**
-Run it through a local server instead of opening the file directly.
+**The better way** (fewer weird issues with CORS or localStorage not working): serve it through a small local server instead.
 
-- If using **VS Code**: install the **Live Server** extension → right-click `index.html` → "Open with Live Server"
-- Or using Python (if installed):
+- In VS Code, install the **Live Server** extension, then right-click `index.html` and choose "Open with Live Server"
+- Or, if you have Python installed, just run:
   ```bash
   cd EduBridge/Frontend
   python -m http.server 5500
   ```
-  Then open: `http://localhost:5500`
+  and open `http://localhost:5500` in your browser
 
-> Make sure the **backend is already running** on port 8080 before opening the frontend, or login/signup calls will fail.
-
----
-
-## Step 4: Using the App
-
-1. **Sign up** as either a Student or Tutor
-2. **Login** — you'll be redirected based on your role:
-   - Student → Dashboard (pick a subject, then choose "Learn from Tutor" or "AI Assistant")
-   - Tutor → Tutor Panel (view and accept pending requests)
-3. **Student flow:**
-   - Describe your problem → Request Help → wait for a tutor to accept → session gets scheduled
-   - Or use the AI Assistant → browse subject slides → ask questions in the chat
-4. **Tutor flow:**
-   - View pending requests for your subjects → Accept → Schedule the session → Mark Complete once done
+One important thing — **the backend has to already be running** before you open the frontend, otherwise login and signup will fail with a "failed to fetch" type error, since there's nothing on the other end to respond.
 
 ---
 
-## Low/No Internet Feature (Our Twist)
+## How the app actually works, step by step
 
-EduBridge is designed to keep working even when connectivity is poor or completely absent:
-
-| Condition            | What Happens                                                                 |
-|-----------------------|-------------------------------------------------------------------------------|
-| **No internet at all** | AI Assistant still works — slides and FAQs are cached locally (`localStorage`) after the first successful load, so students can keep learning and asking questions offline |
-| **Weak internet**      | Tutor list loads via a lightweight endpoint (`/api/tutors/lightweight`) with minimal data only |
-| **Connection drops mid-request** | Requests made while offline are saved locally and automatically synced to the backend once the connection returns |
-
-An **Online/Offline indicator** is shown on screen at all times so this is easy to demonstrate live.
+1. **Sign up** as either a Student or a Tutor.
+2. **Log in** — where you land depends on your role:
+   - Students go to the Dashboard, where they pick a subject and then choose between "Learn from Tutor" or the "AI Assistant"
+   - Tutors go straight to the Tutor Panel, where they can see and accept pending requests
+3. **If you're a student going the Tutor route** — you describe your problem, hit "Request Help," and wait. Once a tutor accepts, a session gets created and scheduled.
+4. **If you're a student going the AI route** — you get instant access to subject slides and a chat where you can ask questions, and the AI searches through saved answers to help you right away.
+5. **If you're a tutor** — you see requests that match the subjects you teach, accept the ones you want to take, schedule a time, and once the session is done, mark it complete.
 
 ---
 
-## API Endpoints Reference
+## The low/no internet part — why it matters and how it works
 
-### Auth
-| Method | Endpoint             | Access | Description        |
-|--------|-----------------------|--------|---------------------|
-| POST   | `/api/auth/signup`    | Public | Register a new user |
-| POST   | `/api/auth/login`     | Public | Login, returns JWT   |
+This was the core challenge we were given, so we built it into the actual flow instead of treating it as a separate feature bolted on top.
 
-### Requests
-| Method | Endpoint                     | Access  | Description                     |
-|--------|-------------------------------|---------|----------------------------------|
-| POST   | `/api/requests`               | Student | Create a help request           |
-| GET    | `/api/requests/pending`       | Tutor   | View pending requests (by subject) |
-| PUT    | `/api/requests/{id}/accept`   | Tutor   | Accept a request, auto-creates a session |
+**When there's no internet at all** — the AI Assistant still works. The first time a student opens it (while they do have some connection), the slides and FAQ content get saved locally in the browser's storage. After that, even with zero internet, the student can keep reading the material and asking questions, because the AI is just searching through what's already saved on their device.
 
-### Sessions
-| Method | Endpoint                        | Access | Description               |
-|--------|-----------------------------------|--------|-----------------------------|
-| PUT    | `/api/sessions/{id}/schedule`     | Tutor  | Set the session's scheduled time |
-| PUT    | `/api/sessions/{id}/complete`     | Tutor  | Mark session (and request) as completed |
+**When the internet is weak** — instead of loading full tutor profiles with extra data, the app calls a lightweight endpoint that only sends back the essentials (tutor's id, name, and subject). Less data to pull means it loads fast even on a shaky connection.
 
-### AI Assistant
-| Method | Endpoint                    | Access | Description                        |
-|--------|-------------------------------|--------|--------------------------------------|
-| GET    | `/api/ai/slides/{subject}`    | Auth   | Get ordered syllabus slides for a subject |
-| GET    | `/api/ai/faq/{subject}`       | Auth   | Get FAQ list for a subject (cached offline) |
-| POST   | `/api/ai/ask`                 | Auth   | Ask a question, get a matched answer |
+**When the connection drops in the middle of something** — say a student is filling out a help request and loses signal — the request doesn't just fail. It gets saved locally first, and the app automatically tries to sync it to the backend the moment the connection comes back, without the student having to do anything.
 
-### Tutors
-| Method | Endpoint                  | Access | Description                          |
-|--------|------------------------------|--------|----------------------------------------|
-| GET    | `/api/tutors/lightweight`     | Auth   | Minimal tutor list (low-data mode)     |
-
-*(All endpoints except signup/login require the `Authorization: Bearer <token>` header.)*
+There's also a small Online/Offline indicator visible on screen at all times, mainly so it's easy to actually show this working during a live demo.
 
 ---
 
-## Troubleshooting
+## API endpoints, if you need to reference them
 
-| Problem                              | Fix                                                                 |
-|----------------------------------------|----------------------------------------------------------------------|
-| Backend won't start / DB connection error | Check MySQL is running and credentials in `application.properties` are correct |
-| 401/403 errors on frontend            | Make sure you're logged in and the token is being sent; try logging in again |
-| Frontend shows blank/CORS errors      | Run frontend via a local server (Live Server / `python -m http.server`) instead of opening the file directly |
-| Port 8080 already in use              | Change `server.port` in `application.properties`, or stop the other process using that port |
+**Auth**
+
+| Method | Endpoint | Who can use it | What it does |
+|--------|-----------|------------------|----------------|
+| POST | `/api/auth/signup` | Anyone | Creates a new account |
+| POST | `/api/auth/login` | Anyone | Logs in, returns a JWT token |
+
+**Requests**
+
+| Method | Endpoint | Who can use it | What it does |
+|--------|-----------|------------------|----------------|
+| POST | `/api/requests` | Student | Creates a help request |
+| GET | `/api/requests/pending` | Tutor | Shows pending requests matching their subjects |
+| PUT | `/api/requests/{id}/accept` | Tutor | Accepts a request, automatically creates a session |
+
+**Sessions**
+
+| Method | Endpoint | Who can use it | What it does |
+|--------|-----------|------------------|----------------|
+| PUT | `/api/sessions/{id}/schedule` | Tutor | Sets when the session will happen |
+| PUT | `/api/sessions/{id}/complete` | Tutor | Marks the session (and the linked request) as done |
+
+**AI Assistant**
+
+| Method | Endpoint | Who can use it | What it does |
+|--------|-----------|------------------|----------------|
+| GET | `/api/ai/slides/{subject}` | Logged in | Returns the syllabus slides for that subject, in order |
+| GET | `/api/ai/faq/{subject}` | Logged in | Returns saved FAQ entries for that subject (this is what gets cached for offline use) |
+| POST | `/api/ai/ask` | Logged in | Takes a question, tries to match it to a saved answer |
+
+**Tutors**
+
+| Method | Endpoint | Who can use it | What it does |
+|--------|-----------|------------------|----------------|
+| GET | `/api/tutors/lightweight` | Logged in | Returns a minimal tutor list, used for the low-data mode |
+
+Every endpoint except signup and login needs the `Authorization: Bearer <token>` header attached.
+
+---
+
+## If something breaks
+
+| What's happening | What to try |
+|---------------------|----------------|
+| Backend won't start, or you're getting a database connection error | Make sure MySQL/MariaDB is actually running, and double check the username/password in `application.properties` — this is the most common issue |
+| Getting 401 or 403 errors on the frontend | You're probably not logged in, or the token isn't being sent properly — try logging out and back in |
+| Frontend loads blank, or you see CORS errors in the console | Don't open `index.html` by double-clicking — serve it through Live Server or a local Python server instead |
+| "Port 8080 already in use" | Something else is already running on that port — either stop it, or change `server.port` in `application.properties` |
 
 ---
 
 ## Team
 
-Built for [Hackathon Name] — **EduBridge** team.
+Built for [Hackathon Name] — the EduBridge team.
 
-**Build. Innovate. Collaborate. Have Fun!**
+Build. Innovate. Collaborate. Have fun.
