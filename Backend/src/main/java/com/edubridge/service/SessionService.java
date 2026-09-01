@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SessionService {
@@ -22,6 +24,14 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final RequestRepository requestRepository;
     private final CurrentUserService currentUserService;
+
+    @Transactional(readOnly = true)
+    public List<SessionResponse> getMySessions() {
+        User tutor = currentUserService.requireRole(Role.TUTOR);
+        return sessionRepository.findByTutorOrderByScheduledTimeDesc(tutor).stream()
+                .map(SessionResponse::from)
+                .toList();
+    }
 
     @Transactional
     public SessionResponse scheduleSession(Long sessionId, ScheduleSessionDto dto) {

@@ -37,6 +37,19 @@
       <h3>No pending requests</h3>
       <p>Check back later — students are studying!</p>
     </div>
+
+    <section class="panel-section">
+      <div class="panel-section__header">
+        <h2>My Sessions</h2>
+        <span id="sessions-count" class="panel-section__count"></span>
+      </div>
+      <div id="my-sessions-list" class="request-list"></div>
+      <div id="my-sessions-empty" class="empty-state" style="display:none">
+        <div class="empty-state__icon">📅</div>
+        <h3>No sessions yet</h3>
+        <p>Accepted requests will appear here for scheduling.</p>
+      </div>
+    </section>
   </main>
 
   <script src="js/auth.js"></script>

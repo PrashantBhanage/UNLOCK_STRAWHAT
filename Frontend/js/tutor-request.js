@@ -55,7 +55,7 @@ async function loadSubjectResource() {
   try {
     const data = await apiFetch(`/api/tutors/resource/${encodeURIComponent(subject)}`);
     link.href = data.resourceUrl;
-    link.textContent = data.resourceLabel || 'Watch Tutor Resource';
+    link.textContent = data.resourceLabel || 'View Study Material';
     section.hidden = false;
   } catch {
     section.hidden = true;

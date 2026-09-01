@@ -1,7 +1,7 @@
 const SUBJECTS = [
-  { id: 'English', icon: '📖', tagline: 'Writing, grammar & literature' },
-  { id: 'Math', icon: '🔢', tagline: 'Numbers, algebra & calculus' },
+  { id: 'Database-SQL', icon: '🗃️', tagline: 'Tables, queries & data management' },
   { id: 'Python', icon: '🐍', tagline: 'Programming fundamentals' },
+  { id: 'Math', icon: '🔢', tagline: 'Numbers, algebra & calculus' },
   { id: 'Java', icon: '☕', tagline: 'Object-oriented programming' },
 ];
 

@@ -692,6 +692,33 @@ a:hover { color: var(--coral); }
 
 .empty-state__icon { font-size: 3rem; margin-bottom: 1rem; }
 
+/* ── Tutor panel: My Sessions section ── */
+.panel-section { margin-top: 3rem; }
+.panel-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.panel-section__header h2 {
+  font-family: var(--font-head);
+  color: var(--teal-deep);
+  font-size: 1.35rem;
+}
+.panel-section__count {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.session-time { color: var(--teal-mid); font-weight: 600; }
+.session-completed {
+  color: var(--online);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .ai-layout { grid-template-columns: 1fr; }

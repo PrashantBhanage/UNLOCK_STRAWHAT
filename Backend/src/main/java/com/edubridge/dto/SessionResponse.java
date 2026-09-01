@@ -17,6 +17,9 @@ public class SessionResponse {
     private String tutorName;
     private LocalDateTime scheduledTime;
     private SessionStatus status;
+    private String subject;
+    private String description;
+    private String studentName;
 
     public static SessionResponse from(Session session) {
         return SessionResponse.builder()
@@ -26,6 +29,9 @@ public class SessionResponse {
                 .tutorName(session.getTutor().getName())
                 .scheduledTime(session.getScheduledTime())
                 .status(session.getStatus())
+                .subject(session.getRequest().getSubject())
+                .description(session.getRequest().getDescription())
+                .studentName(session.getRequest().getStudent().getName())
                 .build();
     }
 }
