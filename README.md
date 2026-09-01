@@ -158,17 +158,33 @@ One important thing — **the backend has to already be running** before you ope
 
 ---
 
-## The low/no internet part — why it matters and how it works
+## The low/no internet part — why it matters and how it actually works
 
-This was the core challenge we were given, so we built it into the actual flow instead of treating it as a separate feature bolted on top.
+This was the core challenge we were given for this hackathon, so instead of treating it like a bonus feature stuck on top, we tried to build it into the actual flow of the app itself. The thinking behind it is simple: a lot of the students EduBridge is meant to help live in places where internet isn't something they can count on. It might work for five minutes, then disappear for an hour. So the app had to be designed around that reality, not around the assumption that everyone has a stable connection all the time.
 
-**When there's no internet at all** — the AI Assistant still works. The first time a student opens it (while they do have some connection), the slides and FAQ content get saved locally in the browser's storage. After that, even with zero internet, the student can keep reading the material and asking questions, because the AI is just searching through what's already saved on their device.
+Here's how we broke the problem down and dealt with each situation separately.
 
-**When the internet is weak** — instead of loading full tutor profiles with extra data, the app calls a lightweight endpoint that only sends back the essentials (tutor's id, name, and subject). Less data to pull means it loads fast even on a shaky connection.
+### When there's no internet at all
 
-**When the connection drops in the middle of something** — say a student is filling out a help request and loses signal — the request doesn't just fail. It gets saved locally first, and the app automatically tries to sync it to the backend the moment the connection comes back, without the student having to do anything.
+This is where the AI Assistant really earns its place in the app. The idea is: the first time a student opens a subject while they do have some connection, even just briefly, the app quietly pulls down the syllabus slides and the FAQ questions/answers for that subject and saves them in the browser's local storage. It's not a big download, this is just text, so it happens almost instantly.
 
-There's also a small Online/Offline indicator visible on screen at all times, mainly so it's easy to actually show this working during a live demo.
+After that first save, the AI Assistant doesn't actually need the internet to keep working. When a student later opens the app with zero connectivity, it doesn't try to hit the server at all for anything related to that subject's content — it just reads straight from what's already sitting in local storage. So a student can still browse through the slides, and when they type a question into the chat box, the app searches through the saved FAQ answers on their own device to find something that matches. No request ever leaves their phone or laptop for this to work.
+
+The honest way to describe this is that it's not a live AI thinking through the question in real time — it's closer to a smart, pre-loaded search through content that was gathered when connectivity was last available. But from the student's side, it feels responsive and useful even with the internet completely switched off, which is really what matters here.
+
+### When the internet is there, but weak or unreliable
+
+This is a slightly different problem from having zero internet — here the connection exists, but it's slow, unstable, or expensive in terms of data usage. Loading a full tutor profile with descriptions, extra fields, and so on just wastes time and data on a weak connection. So instead, when the app needs to show a list of available tutors, it calls a separate, lightweight endpoint that only sends back the bare minimum: the tutor's id, their name, and the subject they teach. Nothing else. Less data means the response comes back faster and the page doesn't hang, even on a connection that's barely holding on.
+
+### When the connection drops in the middle of something
+
+This one was important to get right, because it's the most common real scenario — a student is halfway through describing their problem or submitting a help request, and the connection just drops. In a normal app, that request would simply fail and the student would have to start over once they're back online, which is frustrating and easy to give up on.
+
+In EduBridge, if that happens, the request doesn't just disappear. It gets saved locally on the student's device first, before the app even tries to send it anywhere. Then, in the background, the app keeps an eye on the connection status. The moment it detects the internet is back, it automatically resends that saved request to the backend, without the student needing to do anything or even necessarily notice it happened. From their side, it just feels like it eventually went through, sometimes with a short delay.
+
+### How you can actually see this working
+
+There's a small Online/Offline indicator visible on screen at all times, mainly so this isn't just something we can talk about but can't show. During a demo, you can literally turn off your wifi, walk through the AI Assistant still working, submit a request while offline and show it save locally, then turn the wifi back on and watch it sync — that's the clearest way to prove the whole thing isn't just theoretical.
 
 ---
 
