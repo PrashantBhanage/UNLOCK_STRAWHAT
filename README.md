@@ -84,7 +84,6 @@ mvn spring-boot:run
 ```
 
 If everything's fine, you'll see something like this near the bottom of the logs:
-
 ```
 Tomcat started on port(s): 8080
 Started EduBridgeApplication in X.XXX seconds
