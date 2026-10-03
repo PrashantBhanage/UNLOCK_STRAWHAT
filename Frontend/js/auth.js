@@ -55,13 +55,6 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
-async function detectRole(token) {
-  const res = await fetch(`${API_BASE}/api/requests/pending`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.ok ? 'TUTOR' : 'STUDENT';
-}
-
 function requireAuth(allowedRoles) {
   const token = getToken();
   const user = getUser();
@@ -162,7 +155,8 @@ async function handleLogin(form, alertEl) {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
-    const role = await detectRole(data.token);
+    const role = data.role;
+    if (!role) throw new Error('Login response did not include a user role.');
     const stored = getUser();
     const name = stored?.email === email ? stored.name : email.split('@')[0];
     setAuth(data.token, { name, email, role });
