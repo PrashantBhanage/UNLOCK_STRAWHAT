@@ -202,18 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  onOnline(async () => {
-    const state = loadRequestState();
-    if (state?.offline && state.description) {
-      try {
-        await submitRequest(state.description);
-        showAlert(document.getElementById('request-alert'), 'Request sent successfully!', 'success');
-      } catch (err) {
-        showAlert(document.getElementById('request-alert'), err.message);
-      }
-    }
-  });
-
   window.addEventListener('edubridge:queue-synced', (e) => {
     const synced = e.detail?.find((s) => s.type === 'create_request');
     if (!synced) return;
