@@ -1,0 +1,17 @@
+# Java / Maven
+Backend/target/
+**/target/
+*.class
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local environment / secrets
+.env
+*.env
