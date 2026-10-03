@@ -1,5 +1,6 @@
 package com.edubridge.dto;
 
+import com.edubridge.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,4 +9,5 @@ import lombok.Getter;
 public class AuthResponse {
 
     private String token;
+    private Role role;
 }
