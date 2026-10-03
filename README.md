@@ -64,18 +64,48 @@ Head into the Backend folder:
 cd EduBridge/Backend
 ```
 
-Open `src/main/resources/application.properties` and put in your actual MySQL credentials — the placeholder values won't work, this trips people up a lot:
+The backend reads database credentials and the JWT signing key from environment variables. Keep those values out of Git.
+
+The application uses the `edubridge` database. It can create that database automatically when the MySQL user has permission to do so.
+
+For Linux/macOS:
+
+```bash
+export DB_USERNAME=root
+export DB_PASSWORD=YOUR_MYSQL_PASSWORD
+export JWT_SECRET='generate-a-random-secret-at-least-32-characters-long'
+
+cd EduBridge/Backend
+mvn spring-boot:run
+```
+
+For Windows PowerShell:
+
+```powershell
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="YOUR_MYSQL_PASSWORD"
+$env:JWT_SECRET="generate-a-random-secret-at-least-32-characters-long"
+
+cd EduBridge/Backend
+mvn spring-boot:run
+```
+
+The important settings in `src/main/resources/application.properties` are:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/edubridge_db
-spring.datasource.username=root
-spring.datasource.password=YOUR_MYSQL_PASSWORD
+spring.datasource.url=jdbc:mysql://localhost:3306/edubridge?createDatabaseIfNotExist=true
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:}
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
+jwt.secret=${JWT_SECRET:}
+jwt.expiration-ms=86400000
 server.port=8080
 ```
+
+The application will refuse to start if `JWT_SECRET` is missing or shorter than 32 bytes.
 
 Then just run it:
 
