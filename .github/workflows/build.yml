@@ -1,0 +1,48 @@
+name: Build and Validate
+
+on:
+  push:
+    branches:
+      - main
+      - 'fix/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Backend
+    env:
+      JWT_SECRET: ci-only-secret-with-at-least-32-characters
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build backend
+        run: mvn -B test -DskipTests=false
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check JavaScript syntax
+        run: node --check Frontend/js/auth.js && node --check Frontend/js/offline.js && node --check Frontend/js/dashboard.js && node --check Frontend/js/ai-assistant.js && node --check Frontend/js/tutor-panel.js && node --check Frontend/js/tutor-request.js
