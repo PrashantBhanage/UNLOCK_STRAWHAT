@@ -35,12 +35,26 @@ public class RequestService {
 
     @Transactional
     public RequestResponse createRequest(CreateRequestDto dto) {
+        if (dto == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is required");
+        }
+
+        String subject = dto.getSubject() == null ? "" : dto.getSubject().trim();
+        String description = dto.getDescription() == null ? "" : dto.getDescription().trim();
+
+        if (subject.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Subject is required");
+        }
+        if (description.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Description is required");
+        }
+
         User student = currentUserService.requireRole(Role.STUDENT);
 
         Request request = Request.builder()
                 .student(student)
-                .subject(dto.getSubject())
-                .description(dto.getDescription())
+                .subject(subject)
+                .description(description)
                 .status(RequestStatus.PENDING)
                 .build();
 
