@@ -1,7 +1,13 @@
 const OFFLINE_QUEUE_KEY = 'edubridge_offline_queue';
+let offlineQueueProcessing = false;
 
 function isOnline() {
   return navigator.onLine;
+}
+
+function currentUserEmail() {
+  if (typeof getUser !== 'function') return null;
+  return getUser()?.email?.trim().toLowerCase() || null;
 }
 
 function initOfflineIndicator() {
@@ -36,7 +42,14 @@ function initOfflineIndicator() {
 
 function getOfflineQueue() {
   const raw = localStorage.getItem(OFFLINE_QUEUE_KEY);
-  return raw ? JSON.parse(raw) : [];
+  if (!raw) return [];
+
+  try {
+    const queue = JSON.parse(raw);
+    return Array.isArray(queue) ? queue : [];
+  } catch {
+    return [];
+  }
 }
 
 function saveOfflineQueue(queue) {
@@ -44,47 +57,65 @@ function saveOfflineQueue(queue) {
 }
 
 function queueOfflineRequest(item) {
+  const userEmail = currentUserEmail();
+  if (!userEmail) throw new Error('You must be logged in to save an offline request.');
+
   const queue = getOfflineQueue();
-  queue.push({ ...item, queuedAt: Date.now() });
+  queue.push({ ...item, userEmail, queuedAt: Date.now() });
   saveOfflineQueue(queue);
 }
 
 async function processOfflineQueue() {
-  if (!isOnline() || typeof apiFetch !== 'function') return;
+  if (!isOnline() || typeof apiFetch !== 'function' || offlineQueueProcessing) return;
+
+  const userEmail = currentUserEmail();
+  if (!userEmail) return;
 
   const queue = getOfflineQueue();
   if (!queue.length) return;
 
-  const remaining = [];
-  const synced = [];
-  for (const item of queue) {
-    try {
-      if (item.type === 'create_request') {
-        const result = await apiFetch('/api/requests', {
-          method: 'POST',
-          body: JSON.stringify(item.payload),
-        });
-        synced.push({ type: item.type, result, payload: item.payload });
-      }
-    } catch {
-      remaining.push(item);
-    }
-  }
-  saveOfflineQueue(remaining);
+  offlineQueueProcessing = true;
+  try {
+    const remaining = [];
+    const synced = [];
 
-  if (synced.length) {
-    window.dispatchEvent(new CustomEvent('edubridge:queue-synced', { detail: synced }));
+    for (const item of queue) {
+      if (item.userEmail !== userEmail) {
+        remaining.push(item);
+        continue;
+      }
+
+      try {
+        if (item.type === 'create_request') {
+          const result = await apiFetch('/api/requests', {
+            method: 'POST',
+            body: JSON.stringify(item.payload),
+          });
+          synced.push({ type: item.type, result, payload: item.payload });
+        } else {
+          remaining.push(item);
+        }
+      } catch {
+        remaining.push(item);
+      }
+    }
+
+    saveOfflineQueue(remaining);
+
+    if (synced.length) {
+      window.dispatchEvent(new CustomEvent('edubridge:queue-synced', { detail: synced }));
+    }
+  } finally {
+    offlineQueueProcessing = false;
   }
 }
 
 function onOnline(callback) {
   window.addEventListener('edubridge:online', callback);
-  window.addEventListener('online', callback);
 }
 
 function onOffline(callback) {
   window.addEventListener('edubridge:offline', callback);
-  window.addEventListener('offline', callback);
 }
 
 function cacheData(key, data) {
