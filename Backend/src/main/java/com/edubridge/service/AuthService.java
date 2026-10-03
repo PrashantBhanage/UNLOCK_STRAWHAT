@@ -53,13 +53,16 @@ public class AuthService {
                     .build());
         }
 
-        return new AuthResponse(jwtUtil.generateToken(user.getEmail()));
+        return new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getRole());
     }
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        return new AuthResponse(jwtUtil.generateToken(request.getEmail()));
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
+
+        return new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getRole());
     }
 }
