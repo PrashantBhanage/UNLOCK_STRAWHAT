@@ -28,18 +28,35 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse signup(SignupRequest request) {
+        if (request == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is required");
+        }
+
+        String name = request.getName() == null ? "" : request.getName().trim();
+        String email = request.getEmail() == null ? "" : request.getEmail().trim().toLowerCase();
+        String password = request.getPassword() == null ? "" : request.getPassword();
+
+        if (name.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is required");
+        }
+        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A valid email is required");
+        }
+        if (password.length() < 8) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password must be at least 8 characters");
+        }
         if (request.getRole() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role is required (STUDENT or TUTOR)");
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         }
 
         User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .name(name)
+                .email(email)
+                .password(passwordEncoder.encode(password))
                 .role(request.getRole())
                 .build();
 
@@ -57,10 +74,24 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        if (request == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is required");
+        }
 
-        User user = userRepository.findByEmail(request.getEmail())
+        String email = request.getEmail() == null ? "" : request.getEmail().trim().toLowerCase();
+        String password = request.getPassword() == null ? "" : request.getPassword();
+
+        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A valid email is required");
+        }
+        if (password.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required");
+        }
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
         return new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getRole());
